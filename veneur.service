@@ -1,0 +1,15 @@
+[Unit]
+Description=Veneur
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/default/veneur
+ExecStartPre=-/usr/bin/docker kill veneur
+ExecStartPre=-/usr/bin/docker rm veneur 
+ExecStart=/usr/bin/docker run -t --name veneur -e DD_API_KEY=${DD_API_KEY} -p 8126:8126/udp -p 8127:8127  veneur
+
+
+
+[Install]
+WantedBy=multi-user.target timers.target
