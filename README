@@ -1,0 +1,6 @@
+# Veneur, in Docker
+
+
+
+This repository provides a vanilla Dockerfile and sample systemd unit for running [Veneur](https://github.com/stripe/veneur). Veneur is a server implementation of the DogStatsD protocol for aggregating metrics and sending them to downstream storage.
+
