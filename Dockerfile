@@ -13,9 +13,10 @@ RUN unzip protoc-3.1.0-linux-x86_64.zip
 RUN cp bin/protoc /usr/bin/protoc
 RUN chmod 777 /usr/bin/protoc
 
-RUN go get -u github.com/stripe/veneur
+RUN go get -u -d github.com/stripe/veneur
 
 WORKDIR /go/src/github.com/stripe/veneur
+RUN git checkout 4ca1c9e0212d4a55745c3df0e42aab963e45cdd3
 
 
 # If running locally, ignore any changes since
@@ -40,6 +41,8 @@ RUN gofmt -w .
 # therefore reports that the file may have changed (ie, a series of 0s)
 # See https://github.com/stripe/veneur/pull/110#discussion_r92843581
 RUN git add .
+RUN git reset ssf
+RUN git diff --cached
 RUN git diff-index --cached --exit-code HEAD
 
 
@@ -50,6 +53,6 @@ RUN go build -a -v -ldflags "-X github.com/stripe/veneur.VERSION=$(git rev-parse
 ADD config.yaml /go/src/github.com/stripe/veneur/
 
 ADD run.sh /go/src/github.com/stripe/veneur/
-RUN chmod 777 /go/src/github.com/stripe/veneur/run.sh 
+RUN chmod 777 /go/src/github.com/stripe/veneur/run.sh
 
 CMD /go/src/github.com/stripe/veneur/run.sh
